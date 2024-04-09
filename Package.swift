@@ -17,6 +17,8 @@ let package = Package(
         .package(url: "https://github.com/vapor/fluent-sqlite-driver.git", from: "4.0.0"),
         // 🗄️ Queues queueing system
         .package(url: "https://github.com/m-barthelemy/vapor-queues-fluent-driver.git", from: "3.0.0-beta1"),
+        // 🌐 Lingo-Vapor
+        .package(url: "https://github.com/vapor-community/Lingo-Vapor.git", from: "4.2.0"),
     ],
     targets: [
         .executableTarget(
@@ -27,6 +29,7 @@ let package = Package(
                 .product(name: "FluentPostgresDriver", package: "fluent-postgres-driver"),
                 .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver"),
                 .product(name: "QueuesFluentDriver", package: "vapor-queues-fluent-driver"),
+                .product(name: "LingoVapor", package: "Lingo-Vapor"),
             ]
         ),
         .testTarget(name: "AppTests", dependencies: [
