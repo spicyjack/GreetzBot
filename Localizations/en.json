@@ -1,0 +1,4 @@
+{
+	"title": "Greetz",
+	"greeting.message": "Hi %{full-name}!"
+}

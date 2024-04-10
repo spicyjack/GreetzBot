@@ -7,6 +7,7 @@ import FluentPostgresDriver
 import FluentSQLiteDriver
 import Queues
 import QueuesFluentDriver
+import LingoVapor
 
 // configures your application
 public func configure(_ app: Application) async throws {
@@ -23,9 +24,14 @@ public func configure(_ app: Application) async throws {
         throw BotConfigError.missingTestListenPort("ERROR: missing Test Listen Port in environment")
     }
 
+    app.lingoVapor.configuration =
+        .init(defaultLocale: "en",
+              localizationsDir: "Localizations")
+    let lingo = try app.lingoVapor.lingo()
+
     // register routes
     try app.register(collection: BasicRoutesController())
-    try app.register(collection: GreetzBotController())
+    try app.register(collection: GreetzBotController(lingo))
 
     // set up queues
     if app.environment == .testing {
@@ -51,6 +57,7 @@ public func configure(_ app: Application) async throws {
         try app.queues.startInProcessJobs(on: .default)
         try app.queues.startScheduledJobs()
     }
+
 
     // listen port; default is 8100/TCP
     app.http.server.configuration.port

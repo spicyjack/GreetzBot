@@ -5,8 +5,15 @@
 
 import Vapor
 import Fluent
+import Lingo
 
 struct GreetzBotController: RouteCollection {
+    private let lingo: Lingo
+
+    init(_ lingo: Lingo) {
+        self.lingo = lingo
+    }
+
     func boot(routes:RoutesBuilder) throws {
         routes.post("", use: webhookHandler)
     }
@@ -31,8 +38,12 @@ struct GreetzBotController: RouteCollection {
             throw Abort(.ok)
         }
         print("-> Message text: \(messageText)")
-        let scrubbedText = escapeMarkdown(messageText)
-        let replyText = "Greetz! \(scrubbedText)"
+        
+        let scrubber = MarkdownScrubber()
+        let scrubbedText = scrubber.escapeMarkdown(messageText)
+        let localizedTitle = lingo.localize("title", locale: "en")
+//        let localizedTitle = lingo.localize("title", locale: "ru")
+        let replyText = "\(localizedTitle)! \(scrubbedText)"
         let msg = TGSendMessage(chat_id: chatID,
                                 parse_mode: "MarkdownV2",
                                 text: replyText)
@@ -41,15 +52,5 @@ struct GreetzBotController: RouteCollection {
         try await queueHelper.enqueueTGSendMessages(messagesToQueue)
         return .ok
     }
-
-    func escapeMarkdown(_ string: String) -> String {
-        let escapedMarkdown = string.replacingOccurrences(
-            of: #"([\*_~\|\(\)\[\]\>`#\+\-=\{\}\.\!])"#,
-            with: #"\\$1"#,
-            options: .regularExpression)
-
-        return escapedMarkdown
-    }
-
 }
 
