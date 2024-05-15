@@ -31,6 +31,17 @@ You will receive an Telegram API key, which you need to add to the file `.env`
 in the root of this repo.  You can use the file `env.txt` as a template for
 creating this `.env` file, and fill it out with the appropriate information.
 
+You will also need to add a set of credentials to a PostgreSQL database to the
+`.env` file, for the _Queues_ driver to use for persisting messages.
+
+The `LISTEN_PORT` is the port the Vapor application should listen on.  This is
+handy if you want to put an HTTP proxy in front of your Vapor application
+(recommended) and then have the Telegram API server contact the hostname and
+port of the proxy server to reach your application.  You can also have the
+proxy server restrict inbound requests by IP address, since Telegram has
+published their "source IP blocks" as a list, it makes it easy to restrict
+direct access to your bot application.
+
 ## Responding to Telegram API Messages ##
 The [Telegram Bot FAQ](https://core.telegram.org/bots/faq) has a diagram that
 shows the two methods of responding to API requests.
