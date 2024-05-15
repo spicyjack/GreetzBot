@@ -42,6 +42,7 @@ struct GreetzBotController: RouteCollection {
         let scrubber = MarkdownScrubber()
         let scrubbedText = scrubber.escapeMarkdown(messageText)
         let localizedTitle = lingo.localize("title", locale: "en")
+//        let localizedTitle = lingo.localize("foo", locale: "en")
 //        let localizedTitle = lingo.localize("title", locale: "ru")
         let replyText = "\(localizedTitle)! \(scrubbedText)"
         let msg = TGSendMessage(chat_id: chatID,
