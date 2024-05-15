@@ -11,6 +11,13 @@ incoming messages using a separate API request via a Queue job.
 
 The bot is currently "localized" to English and Russian.
 
+The bot also checks for and escapes any characters that can be interpreted as
+Markdown markup characters, based on [Telegram's Markdown formatting
+schema](https://core.telegram.org/bots/api#formatting-options).  If you do not
+correctly escape any Markdown formatting in your bot API messages, then the
+API server will usually reject your API message with an HTTP 400 message,
+saying that there is unescaped Markdown tokens in the message.
+
 ## Running the Bot ##
 Send a message to _BotFather_ on Telegram, and ask it to create a new bot.
 
